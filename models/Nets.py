@@ -8,13 +8,19 @@ import torch.nn.functional as F
 
 
 class MLP(nn.Module):
+    # 输入的参数。in：1*28*28，hidden：200，out：10
     def __init__(self, dim_in, dim_hidden, dim_out):
         super(MLP, self).__init__()
         self.layer_input = nn.Linear(dim_in, dim_hidden)
-        self.relu = nn.ReLU()
+        self.relu = nn.ReLU()#激励函数
         self.dropout = nn.Dropout()
+        # dropout
+        # 当一个复杂的前馈神经网络被训练在小的数据集时，容易造成过拟合
+        # 为了防止过拟合，可以通过阻止特征检测器的共同作用来提高神经网络的性能
+        # dropout，每一次随机的让一些隐藏层不起作用来达到过拟合的作用
         self.layer_hidden = nn.Linear(dim_hidden, dim_out)
 
+    # 向前传播的过程
     def forward(self, x):
         x = x.view(-1, x.shape[1]*x.shape[-2]*x.shape[-1])
         x = self.layer_input(x)
