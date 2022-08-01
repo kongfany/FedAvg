@@ -168,3 +168,45 @@ if __name__ == '__main__':
 # Round   9, Average loss 1.457
 # Training accuracy: 9.00
 # Testing accuracy: 9.00
+# MLP(
+#   (layer_input): Linear(in_features=784, out_features=200, bias=True)
+#   (relu): ReLU()
+#   (dropout): Dropout(p=0.5)
+#   (layer_hidden): Linear(in_features=200, out_features=10, bias=True)
+# )
+# Round   0, Average loss 1.545
+# Round   1, Average loss 1.329
+# Round   2, Average loss 1.471
+# Round   3, Average loss 1.367
+# Round   4, Average loss 1.498
+# Round   5, Average loss 1.430
+# Round   6, Average loss 1.515
+# Round   7, Average loss 1.554
+# Round   8, Average loss 1.376
+# Round   9, Average loss 1.647
+# Training accuracy: 9.00
+# Testing accuracy: 9.00
+
+# > d:\python\pycharmprojects\fedavg\federated-learning\main_fed.py(65)<module>()
+# -> img_size = dataset_train[0][0].shape
+# (Pdb) c
+# MLP(
+#   (layer_input): Linear(in_features=784, out_features=200, bias=True)
+#   (relu): ReLU()
+#   (dropout): Dropout(p=0.5)
+#   (layer_hidden): Linear(in_features=200, out_features=10, bias=True)
+# )
+# Round   0, Average loss 1.441
+# Round   1, Average loss 1.481
+# Round   2, Average loss 1.547
+# Round   3, Average loss 1.564
+# Round   4, Average loss 1.594
+# Round   5, Average loss 1.518
+# Round   6, Average loss 1.497
+# Round   7, Average loss 1.564
+# Round   8, Average loss 1.561
+# Round   9, Average loss 1.378
+# Training accuracy: 9.00
+# Testing accuracy: 9.00
+#
+# (venv) D:\Python\PycharmProjects\FedAvg\federated-learning>
