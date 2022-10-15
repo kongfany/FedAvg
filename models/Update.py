@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Python version: 3.6
-
+# 本地模型训练
 import torch
 from torch import nn, autograd
 from torch.utils.data import DataLoader, Dataset
@@ -28,6 +28,8 @@ class LocalUpdate(object):
         self.args = args
         self.loss_func = nn.CrossEntropyLoss() #交叉熵损失函数
         self.selected_clients = []
+        # idxs: mnist 60000 imgs -> 600 x 100 (每个客户端持有 600 imgs 的私有数据)
+        # batch_size = self.args.local_bs: 10 (本地 model 训练的 batch_size 为 10)
         self.ldr_train = DataLoader(DatasetSplit(dataset, idxs), batch_size=self.args.local_bs, shuffle=True)
 
     def train(self, net):
@@ -40,6 +42,8 @@ class LocalUpdate(object):
         for iter in range(self.args.local_ep):
             batch_loss = []
             for batch_idx, (images, labels) in enumerate(self.ldr_train):
+                # images: variable :  <class 'torch.Tensor'> :  torch.Size([10, 1, 28, 28])
+                # labels: variable :  <class 'torch.Tensor'> :  torch.Size([10])
                 images, labels = images.to(self.args.device), labels.to(self.args.device)
                 net.zero_grad()#将模型的参数梯度初始化为0
                 log_probs = net(images) # ==MLP.forword(net,images)前向传播计算预测值（server共享的模型）

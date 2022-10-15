@@ -106,16 +106,20 @@ if __name__ == '__main__':
         loss_locals = [] # 不同client中的loss
         if not args.all_clients:
             w_locals = []
+        # args.frac:客户端比例，默认0.1
+        # m:每轮通信参与fl的客户端数量
         m = max(int(args.frac * args.num_users), 1)#0.1*100
-        idxs_users = np.random.choice(range(args.num_users), m, replace=False)
         # 随机选取一部分client，全部选择会增加通信量，且实验效果可能会不好
+        idxs_users = np.random.choice(range(args.num_users), m, replace=False)
         # google输入法推荐算法，用户数量大，不能保证虽有用户在线
 
         # 对于每一个用户
         for idx in idxs_users:
             # 本地训练的函数
             local = LocalUpdate(args=args, dataset=dataset_train, idxs=dict_users[idx])
-            # 训练之后返回的值
+            # 训练之后返回的值。
+            # w：本地模型基于本地私有数据训练得到的权重
+            # loss 相关损失
             w, loss = local.train(net=copy.deepcopy(net_glob).to(args.device))
             # 每个迭代轮次本地更新
             if args.all_clients:
@@ -124,13 +128,15 @@ if __name__ == '__main__':
                 w_locals.append(copy.deepcopy(w))
             # 复制参与本轮更新的users的所有权重w和loss
             loss_locals.append(copy.deepcopy(loss))
+            # 以list的形式汇总客户端训练结构
         # update global weights
-        # 通过定义的FedAvg函数求模型参数的平均
+        # 通过定义的FedAvg函数求模型参数的平均，进行模型聚合
         w_glob = FedAvg(w_locals)
 
         # copy weight to net_glob
         # state_dict一个包含module实例完整状态的字典，包含参数和缓冲区，字典的键值是参数或缓冲区的名称。W,b
         # load_state_dict是从state_dict中复制参数和缓冲区到Module及其子类中
+        # 在下一个round时本地客户端继承训练结构
         net_glob.load_state_dict(w_glob)
 
         # print loss
